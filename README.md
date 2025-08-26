@@ -6,7 +6,7 @@ This project's code is modified based on the Data Science Agent from Google Vert
 
 Please follow the bellow steps, and you will deploy the agent to your VertexAI Agent Engine.
 
-The original source code is: [text](https://github.com/google/adk-samples/tree/main/python/agents/data-science)
+The original source code is: [adk-samples/python/agents/data-science](https://github.com/google/adk-samples/tree/main/python/agents/data-science)
 
 ## Agent Details
 The key features of the Data Science Multi-Agent include:
