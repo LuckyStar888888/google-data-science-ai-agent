@@ -1,10 +1,12 @@
-# Data Science with Multiple Agents
+# Google Data Science with Multiple Agents
 
 ## Overview
 
-This project demonstrates a multi-agent system designed for sophisticated data analysis. It integrates several specialized agents to handle different aspects of the data pipeline, from data retrieval to advanced analytics and machine learning. The system is built to interact with BigQuery, perform complex data manipulations, generate data visualizations and execute machine learning tasks using BigQuery ML (BQML). The agent can generate text response as well as visuals, including plots and graphs for data analysis and exploration.
+This project's code is modified based on the Data Science Agent from Google VertexAI Agent Garden. It was a agent which can only do a single dataset analysis. However, there are always multi datasets in the production data warehouse. This project can get access to multi datasets, and analyze all of the tables in those datasets.
 
-▶️ **Watch the Video Walkthrough:** [How to build a Data Science agent with ADK](https://www.youtube.com/watch?v=efcUXoMX818)
+Please follow the bellow steps, and you will deploy the agent to your VertexAI Agent Engine.
+
+The original source code is: [text](https://github.com/google/adk-samples/tree/main/python/agents/data-science)
 
 ## Agent Details
 The key features of the Data Science Multi-Agent include:
@@ -49,13 +51,15 @@ The key features of the Data Science Multi-Agent include:
 1.  **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/google/adk-samples.git
-    cd adk-samples/python/agents/data-science
+    git clone https://github.com/LuckyStar888888/google-data-science-ai-agent.git
+    cd google-data-science-ai-agent/data-science
     ```
 
 2.  **Install Dependencies with Poetry:**
 
+    Make sure the virtual will be created in this project
     ```bash
+    poetry config virtualenvs.in-project true    
     poetry install
     ```
 
@@ -71,13 +75,6 @@ The key features of the Data Science Multi-Agent include:
 
     ```bash
     $> poetry env list
-       data-science-FAlhSuLn-py3.13 (Activated)
-    ```
-
-    If the above command did not activate the environment for you, you can also activate it through
-
-     ```bash
-    source $(poetry env info --path)/bin/activate
     ```
 
 4.  **Set up Environment Variables:**
@@ -100,6 +97,7 @@ The key features of the Data Science Multi-Agent include:
 
 5.  **BigQuery Setup:**
     These steps will load the sample data provided in this repository to BigQuery.
+    **You can skip the upload steps if you are using your own data.**
     For our sample use case, we are working on the Forecasting Sticker Sales data from Kaggle:
 
     _Walter Reade and Elizabeth Park. Forecasting Sticker Sales. https://kaggle.com/competitions/playground-series-s5e1, 2025. Kaggle._
@@ -128,13 +126,12 @@ The key features of the Data Science Multi-Agent include:
         export BQ_DATASET_ID='YOUR-DATASET-ID' # leave as 'forecasting_sticker_sales' if using sample data
         ```
 
-        You can skip the upload steps if you are using your own data. We recommend not adding any production critical datasets to this sample agent.
-        If you wish to use the sample data, continue with the next step.
+        We recommend not adding any production critical datasets to this sample agent. If you wish to use the sample data, continue with the next step.
 
     *   You will find the datasets inside 'data-science/data_science/utils/data/'.
-        Make sure you are still in the working directory (`agents/data-science`). To load the test and train tables into BigQuery, run the following commands:
+        Make sure you are still in the working directory (`google-data-science-ai-agent/data-science`). To load the test and train tables into BigQuery, run the following commands:
         ```bash
-        python3 data_science/utils/create_bq_table.py
+        potry run python data_science/utils/create_bq_table.py
         ```
 
 
@@ -145,10 +142,10 @@ The key features of the Data Science Multi-Agent include:
     Leave the corpus name empty in the .env file: `BQML_RAG_CORPUS_NAME = ''`. The corpus name will be added automatically once it's created.
 
     To set up the RAG Corpus for your project, run the methods `create_RAG_corpus()` and `ingest_files()` in
-    `data-science/data_science/utils/reference_guide_RAG.py` by running the below command from the working directory:
+    `google-data-science-ai-agent/data-science/utils/reference_guide_RAG.py` by running the below command from the working directory:
 
     ```bash
-    python3 data_science/utils/reference_guide_RAG.py
+    potry run python data_science/utils/reference_guide_RAG.py
     ```
 
 
@@ -190,7 +187,7 @@ from the working directory:
 
 ### Example Agent Interaction
 
-Here's a quick example of how a user might interact with the Data Science Multi-Agent System:
+Here's a quick example of how a user might interact with the Data Science Multi-Agent System if you use the sample data:
 
 > ´**User:** Hi, What data do you have access to?
 
@@ -210,29 +207,10 @@ Here's a quick example of how a user might interact with the Data Science Multi-
 > 1. The database agent was first called to retrieve the total sales per country from the train table.
 > 2. The data science agent was then called to generate a bar plot visualizing the results. The plot displays each country on the x-axis and its corresponding total sales on the y-axis.
 
-> **User:** What kinds of forecasting models can I train in BQML?
-
-> **Agent:** You can train several types of forecasting models in BQML, including ARIMA, Exponential Smoothing, and Temporal Fusion Transformer (TFT) models. Would you like to proceed with training a forecasting model?
-
-> **User:** Yes
-
-> **Agent:** Okay, before proceeding, let's confirm the project and dataset ID for BQML. We'll be using the `PROJECT_ID` project and the `forecasting_sticker_sales` dataset. Does that sound right?
-
-> **User:** Yes
-
-> **Agent:** The BQML supports `ARIMA_PLUS`, `ARIMA_PLUS_XREG`.
-
->To proceed, I need to know which model you'd like to use. I also need to know the following:
-
->*   The name of the column that provides the time points (e.g., 'date').
->*   The name of the column that contains the data to forecast (e.g., 'num_sold').
->*   Do you want to fit and forecast multiple time series using a single query? If so, what are the ID columns? (e.g., `country`, `store`, `product`)
-
-
 ## Testing and Evaluation
 
 To run the test and evaluation code, you need a few additional dependencies. Run
-the following Poetry command from the `agents/data-science` directory to install them:
+the following Poetry command from the `google-data-science-ai-agent/data-science` directory to install them:
 ```bash
 poetry install --with=dev
 ```
@@ -385,7 +363,7 @@ python3 deployment/deploy.py --delete --resource_id=RESOURCE_ID
     Experiment with different phrasing and levels of detail.
 *   **Extension:** Extend the multi-agent system with your own AgentTools or sub_agents.
     You can do so by adding additional tools and sub_agents to the root agent inside
-    `agents/data-science/data_science/agent.py`.
+    `google-data-science-ai-agent/data-science/data_science/agent.py`.
 *   **Partial imports:** If you only need certain capabilities inside the multi-agent system,
     e.g. just the data agent, you can import the data_agent as an AgentTool into your own root agent.
 *   **Model Selection:** Try different language models for both the top-level
