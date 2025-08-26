@@ -74,7 +74,7 @@ The key features of the Data Science Multi-Agent include:
     This activates the virtual environment, allowing you to run commands within the project's environment. To make sure the environment is active, use for example
 
     ```bash
-    $> poetry env list
+    poetry env list
     ```
 
 4.  **Set up Environment Variables:**
